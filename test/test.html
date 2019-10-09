@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-dune-light.min.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/npm/codemirror@5.33.0/lib/codemirror.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/codemirror@5.33.0/lib/codemirror.min.css">
+    <script src="http://cdn.jsdelivr.net/npm/codemirror@5.33.0/mode/javascript/javascript.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="test.js"></script>
+    <title>door</title>
+    <style>
+        /* html5 */
+        header, section, footer, aside, nav, main, article, figure, dialog, menu {
+            display: block;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 微软雅黑,sans-serif;
+        }
+        header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            line-height: 50px;
+        }
+        nav {
+            line-height: 30px;
+            background-color: #eeeeee;
+            height: 10000px;
+            width: 300px;
+            float: left;
+        }
+        nav ul {
+            display: block;
+            list-style-type: disc;
+        }
+        nav ul li {
+            display: block;
+            list-style: none;
+            display: list-item;
+        }
+        nav ul li a {
+            color: #000;
+            text-decoration: none;
+            display: block;
+            padding: 3px 0 3px 30px;
+            border-bottom: 0px solid #ddd;
+        }
+        nav ul li a:hover {
+            color: #fff;
+            background: #aaa;
+        }
+        section {
+            float: left;
+            padding: 10px;
+            width: 70%;
+            min-width: 800px;
+        }
+        section ul {
+            margin: auto auto auto 50px;
+        }
+        section hr {
+            border: 0;
+            border-bottom: 1px solid #aaa;
+            margin: 0 0 10px 0;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            clear: both;
+            text-align: center;
+            padding: 5px;
+            line-height: 50px;
+        }
+        .discript {
+            margin: auto auto auto 30px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 300px;
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .navhead {
+            background-color: black;
+            height: 110px;
+        }
+        nav .contents {
+            background-color: #ccc;
+            font-weight:bold;
+            font-size: 18px;
+        }
+        pre.door_block {
+            margin: 15px;
+            padding: 15px;
+            border: 0;
+            background: #fefbec;
+            font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 align='center'>Door Language Help Document</h1>
+        <h1 align='center'>door语言帮助文档</h1>
+    </header>
+    <nav>
+        <div class='sidebar'>
+            <div class='navhead'>
+            </div>
+            <ul>
+                <li>
+                    <a href='#contents' class='contents'>目录 (contents) </a>
+                </li>
+                <li>
+                    <a href='#syntax'>基本语法 (basic syntax) </a>
+                </li>
+                <li>
+                    <a href='#types'>基本类型 (basic types) </a>
+                </li>
+                <li>
+                    <a href='#runtime'>运行环境 (runtime environment) </a>
+                </li>
+                <li>
+                    <a href='#comments'>注释 (comments) </a>
+                </li>
+                <li>
+                    <a href='#operator'>运算符 (operator) </a>
+                </li>
+                <li>
+                    <a href='#condition'>条件控制 (condition) </a>
+                </li>
+                <li>
+                    <a href='#circular'>循环语句 (circular) </a>
+                </li>
+                <li>
+                    <a href='#table'>表 (table) </a>
+                </li>
+                <li>
+                    <a href='#string'>字符串 (string) </a>
+                </li>
+                <li>
+                    <a href='#function'>函数 (function) </a>
+                </li>
+                <li>
+                    <a href='#module'>模块化 (module) </a>
+                </li>
+                <li>
+                    <a href='#io'>输入输出 (io) </a>
+                </li>
+                <li>
+                    <a href='#file'>文件 (file) </a>
+                </li>
+                <li>
+                    <a href='#os'>系统 (os) </a>
+                </li>
+                <li>
+                    <a href='#object'>对象 (object) </a>
+                </li>
+                <li>
+                    <a href='#debug'>调试 (debug) </a>
+                </li>
+                <li>
+                    <a href='#library'>标准库 (standard library) </a>
+                </li>
+                <li>
+                    <a href='#extend'>c++扩展 (c++ extend) </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section>
+        <div class='discript'>
+            <br />
+        </div>
+
+        <hr />
+        <p>
+            <h2>关键字 (keywords) </h2>
+            <pre class='door_block'>
+    var   fun   if   else   case   while   for   each   break   continue   null   </pre>
+            <h2>控制符 (control characters) </h2>
+            <pre  class='door_block'>
+    =   .   :   ::   @   #   ...   !   ?   //   /**/   ()   {}   []   </pre>
+        </p>
+        <br />
+    
+        <hr />
+        <a name='contents'></a>
+        <h2>目录 (contents) </h2>
+        <ul>
+            <li>
+                <a href='#syntax'>基本语法 (basic syntax) </a>
+            </li>
+            <li>
+                <a href='#types'>基本类型 (basic types) </a>
+            </li>
+            <li>
+                <a href='#runtime'>运行环境 (runtime environment) </a>
+            </li>
+            <li>
+                <a href='#comments'>注释 (comments) </a>
+            </li>
+            <li>
+                <a href='#operator'>运算符 (operator) </a>
+            </li>
+            <li>
+                <a href='#condition'>条件控制 (condition) </a>
+            </li>
+            <li>
+                <a href='#circular'>循环语句 (circular) </a>
+            </li>
+            <li>
+                <a href='#table'>表 (table) </a>
+            </li>
+            <li>
+                <a href='#string'>字符串 (string) </a>
+            </li>
+            <li>
+                <a href='#function'>函数 (function) </a>
+            </li>
+            <li>
+                <a href='#module'>模块化 (module) </a>
+            </li>
+            <li>
+                <a href='#io'>输入输出 (io) </a>
+            </li>
+            <li>
+                <a href='#file'>文件 (file) </a>
+            </li>
+            <li>
+                <a href='#os'>系统 (os) </a>
+            </li>
+            <li>
+                <a href='#object'>对象 (object) </a>
+            </li>
+            <li>
+                <a href='#debug'>调试 (debug) </a>
+            </li>
+            <li>
+                <a href='#library'>标准库 (standard library) </a>
+            </li>
+            <li>
+                <a href='#extend'>c++扩展 (c++ extend) </a>
+            </li>
+        </ul>
+        <br />
+        <br />
+    
+        <hr />
+        <div>
+            <a name='syntax'></a>
+            <h2>基本语法 (basic syntax) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;定义一个变量的基本语句：</h3>
+            <pre class='door_block' style><code class='js'>
+                </code></pre>
+            <pre class='door_notes' style>
+            </pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='types'></a>
+            <h2>基本类型 (basic types) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;基本类型有：</h3>
+            <ul>
+            </ul>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='runtime'></a>
+            <h2>运行环境 (runtime environment) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;运行环境是door使用c和c++构建的虚拟机。</h3>
+            <pre class='door_block'></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='comments'></a>
+            <h2>注释 (comments) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;door语言的注释类型和c++。</h3>
+            <pre class='door_block'>
+    //      : 行注释，注释当前一行，当前位置开始直到行尾。
+    /**/    : 块注视，注释整个快，注意不能嵌套，以免出错。</pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='operator'></a>
+            <h2>运算符 (operator) </h2>
+            <h3></h3>
+            <pre class='door_block'></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='condition'></a>
+            <h2>条件控制 (condition) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;条件控制基本和c语言一致，case语句则进行了简化。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='circular'></a>
+            <h2>循环语句 (circular) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;和c++的循环基本一致</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='table'></a>
+            <h2>表 (table) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;表==数组+(k,v)</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='string'></a>
+            <h2>字符串 (string) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;字符串类型使用api函数进行操作。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='function'></a>
+            <h2>函数 (function) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;函数是door语言的基石。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='module'></a>
+            <h2>模块化 (module) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;door使用文件作为模块。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='io'></a>
+            <h2>输入输出 (io) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;这里列出常用的IO操作库函数。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='file'></a>
+            <h2>文件 (file) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;这里列出常用的文件操作库函数。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='os'></a>
+            <h2>系统 (os) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;这里列出常用的系统操作库函数。</h3>
+            <pre class='door_block'>
+            
+            </pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='object'></a>
+            <h2>对象 (object) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;door中没有类的概念，所有的对象就是函数。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='debug'></a>
+            <h2>调试 (debug) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;这里列出常用的调试方法和打印函数。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+        <div>
+            <a name='library'></a>
+            <h2>标准库 (standard library) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;这里列出常用的标准操作库函数。</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+    
+        <hr />
+        <div>
+            <a name='extend'></a>
+            <h2>c++扩展 (c++ extend) </h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;如何在c++中扩展door？</h3>
+            <pre class='door_block'><code class='js'>
+            </code></pre>
+        </div>
+        <div>
+            <a name='tryit'></a>
+            <h2>试一试</h2>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;输入代码，运行一下！</h3>
+            <textarea id="editor" name="editor"></textarea>
+            <button id="run">运行</button>
+            <pre id="result"></pre>
+        </div>
+    </section>
+    <footer>
+        Copyright &copy; All rights reserved.
+    </footer>
+</body>
+</html>
+<script >hljs.initHighlightingOnLoad();</script>
+<script>
+    var myTextarea = document.getElementById('editor');
+    var codeEditor = CodeMirror.fromTextArea(myTextarea, {
+        mode: "text/javascript",
+        lineNumbers: true
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#run").click(function() {
+            var text = codeEditor.getValue();
+            var runo = test_parse(text);
+            $("#result").text(JSON.stringify(runo, null, 4));
+        });
+    });
+</script>
