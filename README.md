@@ -12,6 +12,7 @@ The Language Of Door (Distributed Object Operating Routine)
 
 ## Language Features
 为了更好的支持动态更新指令(bytescode字节码)的片段，需要把函数定义得更为小巧和灵活，所以预备以块为单位（类似于一般语言的lambda或者oc的block）。块就等同于函数体，同时不同参数的变体可以相似变形为：type、function、object。
+```
 /// ----------------------------------------------
 /// door语言: {} -> type | function | object
     A {}                    ->      {__type__:"type",__name__:"A",__attr__:{}}
@@ -23,6 +24,7 @@ The Language Of Door (Distributed Object Operating Routine)
     var c = a.m;            ->      ('m' in a)? (a.m) : (a(m));
     a.m = 1;                ->      ('m' in a)? (a.m = 1) : (a(m, 1));
 /// ----------------------------------------------
+
 
 /// ----------------------------------------------
 /// [类型] 用于描述对象的组成：(类似c++/java中的类的定义方式)
@@ -69,7 +71,7 @@ The Language Of Door (Distributed Object Operating Routine)
     var a = new A();
 /// ----------------------------------------------
 /// [对象] 除了使用new来创建对象外，还可以：
-    
+```
 
 
 1）如何把类的信息动态化
@@ -84,7 +86,7 @@ The Language Of Door (Distributed Object Operating Routine)
             A = {m:...}
             var a = A()
 
-
+```
     A {
         __attr__: [
             a, b, get c, set d
@@ -109,10 +111,13 @@ The Language Of Door (Distributed Object Operating Routine)
     var a = A();
     var b = B();
     var c = C();
+```
+
 
 2) 如何创建对象
     
     相当于：
+```
     A = {
         __func__ : (m ,n) {...},
         __attr__ : {
@@ -121,6 +126,7 @@ The Language Of Door (Distributed Object Operating Routine)
             c : function
         }
     }
+```
     A是一个函数，使用this添加属性，this代表调用函数后构造的对象
     var a = A();
 
