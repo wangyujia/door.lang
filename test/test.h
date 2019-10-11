@@ -53,7 +53,7 @@ typedef struct DOR_TEST_RESULT_S {
         }                                                       \
     }                                                           \
     static int __dor_test_func_##func(                          \
-        int argc, const char *argv,                             \
+        int argc, const char **argv,                            \
         LOG_PRINT print, LOG_PARA para)
 #define DOR_TEST_REG(func)                                      \
     extern void __dor_test_reg_##func();                        \
