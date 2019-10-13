@@ -17,10 +17,10 @@ extern "C" {
     do {                                                        \
         char *__d = (dst); const char *__s = (src);             \
         while (__d && __s && *__s && (max) &&                   \
-                __s < (src + (max) - 1)) {                      \
+               __d < ((dst) + (max) - 1)) {                     \
             *__d++ = *__s++;                                    \
         }                                                       \
-        if (__d > dst) *__d = 0;                                \
+        if (__d && (max)) *__d = '\0';                          \
     } while (0)
 #endif
 
