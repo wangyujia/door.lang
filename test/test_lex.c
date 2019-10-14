@@ -80,14 +80,18 @@ DOR_TEST_CASE(lex) {
     if (!argc || !argv) {
 
         __CHECK("var a=100;if(a==100)console.log('a:',a);", TRUE);
-        __CHECK("var a=102.3;if(a==102.3)console.log('a:',a);", TRUE);
-        __CHECK("var a=00x100f;console.log('a:',(a)?a:'null');", FALSE);
-        __CHECK("var a=0x100f;console.log('a:',(a)?a:'null');", TRUE);
-        __CHECK("var a=0X100f;console.log('a:',(a)?a:'null');", TRUE);
-        __CHECK("var a=00700;console.log('a:',(a)?a:'null');", TRUE);
-        __CHECK("var a=0700;console.log('a:',(a)?a:'null');", TRUE);
-        __CHECK("var a=00b0110;console.log('a:',(a)?a:'null');", FALSE);
-        __CHECK("var a=0b0110;console.log('a:',(a)?a:'null');", TRUE);
+        __CHECK("102.3", TRUE);
+        __CHECK("00x100f", FALSE);
+        __CHECK("0x100f", TRUE);
+        __CHECK("0X100f", TRUE);
+        __CHECK("00700", TRUE);
+        __CHECK("0700", TRUE);
+        __CHECK("00b0110", FALSE);
+        __CHECK("0b0110", TRUE);
+        __CHECK(".150", TRUE);
+        __CHECK(".a150", TRUE);
+        __CHECK(".150a", FALSE);
+        __CHECK(".150(a", TRUE);
 
     } else {
             for (int i = 0;i < argc; ++i) {
