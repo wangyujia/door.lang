@@ -13,11 +13,12 @@ DOR_TEST_RESULT *dor_test_main(
     LOG_PRINT print, LOG_PARA para)
 {
     DOR_TEST_REG(lex);
-
     char info[256];
-    sprintf(info, "dor_test_main argc:%d\n", argc);
+    int i;
+
+    snprintf(info, sizeof(info), "dor_test_main argc:%d\n", argc);
     if (print) print(info, para);
-    for (int i = 0; i < argc; ++i) {
+    for (i = 0; i < argc; ++i) {
         if (print) print(argv[i], para);
     }
 
@@ -30,7 +31,7 @@ DOR_TEST_RESULT *dor_test_main(
     while (p) {
         DOR_TEST_FUNC f = p->func;
         const char *nme = p->name;
-        sprintf(info, "--------- TEST CASE '%s'|%d ---------\n", nme, result.count);
+        snprintf(info, sizeof(info), "--------- TEST CASE '%s'|%d ---------\n", nme, result.count);
         if (print) print(info, para);
         result.count++;
 

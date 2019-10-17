@@ -16,7 +16,7 @@ static DOR_ERR dor_lex_cb(DOR_LEX_CONTEXT *t,
     char info[256];
     DOR_U32 b = t->index;
     if (i <= b) {
-        sprintf(info, "lex pos err! (%d->%d)\n", b, i);
+        snprintf(info, sizeof(info), "lex pos err! (%d->%d)\n", b, i);
         if (dor_log_print) dor_log_print(info, dor_log_para);
         return DOR_FAIL;
     }
@@ -24,7 +24,7 @@ static DOR_ERR dor_lex_cb(DOR_LEX_CONTEXT *t,
     DOR_U32 l = i - b + 1;
     char *p = (char *)malloc(l);
     DOR_STR_N_CPY(p, s + b, l);
-    sprintf(info, "lex type:%d|%-6s state:%02d|%-8s value:%s \n", 
+    snprintf(info, sizeof(info), "lex type:%d|%-6s state:%02d|%-8s value:%s \n", 
         y, dor_lex_get_type_name(y), 
         a, dor_lex_get_stat_name(a), p);
     if (dor_log_print) dor_log_print(info, dor_log_para);
@@ -53,7 +53,7 @@ DOR_TEST_CASE(lex) {
 
     DOR_ERR r = dor_lex_init(&dor_lex_context);
     if (r != DOR_OK) {
-        sprintf(info, "lex init err! (errno:0x%x)\n", r);
+        snprintf(info, sizeof(info), "lex init err! (errno:0x%x)\n", r);
         if (print) print(info, para);
         return DOR_FAIL;
     }
@@ -62,9 +62,11 @@ DOR_TEST_CASE(lex) {
 
 #define __CHECK(s, t) \
     do { \
+        snprintf(info, sizeof(info), "-----> '%s'\n", s); \
+        if (print) print(info, para); \
         r = dor_lex_parse(&dor_lex_context, s); \
         if (r != DOR_OK) { \
-            sprintf(info, "lex parse err! (errno:0x%x,state:%d|%s',line:%d,col:%d)\n", \
+            snprintf(info, sizeof(info), "lex parse err! (errno:0x%x,state:%d|%s',line:%d,col:%d)\n", \
                 r, dor_lex_context.state, dor_lex_get_stat_name(dor_lex_context.state), \
                 dor_lex_context.line, dor_lex_context.col); \
             if (print) print(info, para); \
@@ -84,14 +86,29 @@ DOR_TEST_CASE(lex) {
         __CHECK("00x100f", FALSE);
         __CHECK("0x100f", TRUE);
         __CHECK("0X100f", TRUE);
+        __CHECK("0x100g", FALSE);
+        __CHECK("0x", FALSE);
         __CHECK("00700", TRUE);
         __CHECK("0700", TRUE);
         __CHECK("00b0110", FALSE);
         __CHECK("0b0110", TRUE);
+        __CHECK("0b0121", FALSE);
+        __CHECK("0B0110", TRUE);
+        __CHECK("0b", FALSE);
         __CHECK(".150", TRUE);
         __CHECK(".a150", TRUE);
+        __CHECK(".a150b223", TRUE);
         __CHECK(".150a", FALSE);
         __CHECK(".150(a", TRUE);
+        __CHECK(".150 a", TRUE);
+        __CHECK("0.150", TRUE);
+        __CHECK("00.151", FALSE);
+        __CHECK("0.15//abc", TRUE);
+        __CHECK("0.15//abc\n*", TRUE);
+        __CHECK("0.15/*abc*/", TRUE);
+        __CHECK("0.15/*abc*123*def*/", TRUE);
+        __CHECK("0.15/*abc*123*def*/*", TRUE);
+        __CHECK("0.15/*abc*123*def*", FALSE);
 
     } else {
             for (int i = 0;i < argc; ++i) {
