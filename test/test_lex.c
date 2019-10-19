@@ -10,8 +10,7 @@ static DOR_LEX_CONTEXT dor_lex_context;
 
 
 static DOR_ERR dor_lex_cb(DOR_LEX_CONTEXT *t, 
-        DOR_LEX_TYPE y, DOR_LEX_STAT a, 
-        const char *s, DOR_U32 i, 
+        DOR_LEX_STAT a, const char *s, DOR_U32 i, 
         void *para) {
     char info[256];
     DOR_U32 b = t->index;
@@ -24,9 +23,8 @@ static DOR_ERR dor_lex_cb(DOR_LEX_CONTEXT *t,
     DOR_U32 l = i - b + 1;
     char *p = (char *)malloc(l);
     DOR_STR_N_CPY(p, s + b, l);
-    snprintf(info, sizeof(info), "lex type:%d|%-6s state:%02d|%-8s value:%s \n", 
-        y, dor_lex_get_type_name(y), 
-        a, dor_lex_get_stat_name(a), p);
+    snprintf(info, sizeof(info), "lex state:%02d|%-6s value:%s \n", 
+        t->state, dor_lex_get_stat_name(t->state), p);
     if (dor_log_print) dor_log_print(info, dor_log_para);
     free(p);
     return DOR_OK;
@@ -62,7 +60,7 @@ DOR_TEST_CASE(lex) {
 
 #define __CHECK(s, t) \
     do { \
-        snprintf(info, sizeof(info), "-----> '%s'\n", s); \
+        snprintf(info, sizeof(info), "-----> '%s' <-----\n", s); \
         if (print) print(info, para); \
         r = dor_lex_parse(&dor_lex_context, s); \
         if (r != DOR_OK) { \

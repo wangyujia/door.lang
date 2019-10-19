@@ -54,53 +54,20 @@ typedef enum DOR_LEX_STAT_E {
     {DOR_LEX_STAT_HEX,              "hex"}, \
     {DOR_LEX_STAT_BIN_B,            "bin_b"}, \
     {DOR_LEX_STAT_BIN,              "bin"}, \
-    {DOR_LEX_STAT_FLOAT_DOT,        "f_dot"}, \
+    {DOR_LEX_STAT_FLOAT_DOT,        "float_dot"}, \
     {DOR_LEX_STAT_FLOAT,            "float"}, \
-    {DOR_LEX_STAT_STR_QUOT,         "s_quot"}, \
+    {DOR_LEX_STAT_STR_QUOT,         "str_quot"}, \
     {DOR_LEX_STAT_STR,              "str"}, \
     {DOR_LEX_STAT_SPACE,            "space"}, \
     {DOR_LEX_STAT_SYMBOL,           "symbol"}, \
     {DOR_LEX_STAT_DOT,              "dot"}, \
     {DOR_LEX_STAT_SLASH,            "slash"}, \
-    {DOR_LEX_STAT_BACKSLASH,        "b_slash"}, \
+    {DOR_LEX_STAT_BACKSLASH,        "backslash"}, \
     {DOR_LEX_STAT_ESCAPE,           "escape"}, \
     {DOR_LEX_STAT_COMMENT,          "comment"}, \
     {DOR_LEX_STAT_COMMENT_CLOSE,    "comm_close"}, \
     {DOR_LEX_STAT_UNKNOWN,          "unknown"}, \
     {DOR_LEX_STAT_ERROR,            "error"}
-
-
-/* 词法类型 */
-typedef enum DOR_LEX_TYPE_E {
-    DOR_LEX_TYPE_NULL = 0,
-
-    DOR_LEX_TYPE_LEX,                       /* 词 */
-    DOR_LEX_TYPE_ZERO,                      /* 0 */
-    DOR_LEX_TYPE_INT,                       /* 整数 */
-    DOR_LEX_TYPE_HEX,                       /* 十六进制数 */
-    DOR_LEX_TYPE_BIN,                       /* 二进制数 */
-    DOR_LEX_TYPE_FLOAT,                     /* 浮点数 */
-    DOR_LEX_TYPE_STR,                       /* 字符串 */
-    DOR_LEX_TYPE_SYMBOL,                    /* 符号 */
-    DOR_LEX_TYPE_SYMBOL_DOT,                /* 点符号 */
-    DOR_LEX_TYPE_SYMBOL_SLASH,              /* 斜杠符号 */
-
-    DOR_LEX_TYPE_COUNT
-} DOR_LEX_TYPE;
-
-
-/* 词法类型对应的名称 */
-#define DOR_LEX_TYPE_NAME_LIST \
-    {DOR_LEX_TYPE_LEX,              "lex"}, \
-    {DOR_LEX_TYPE_ZERO,             "zero"}, \
-    {DOR_LEX_TYPE_INT,              "int"}, \
-    {DOR_LEX_TYPE_HEX,              "hex"}, \
-    {DOR_LEX_TYPE_BIN,              "bin"}, \
-    {DOR_LEX_TYPE_FLOAT,            "float"}, \
-    {DOR_LEX_TYPE_STR,              "str"}, \
-    {DOR_LEX_TYPE_SYMBOL,           "symbol"}, \
-    {DOR_LEX_TYPE_SYMBOL_DOT,       "sym_dot"}, \
-    {DOR_LEX_TYPE_SYMBOL_SLASH,     "sym_slash"}
 
 
 /* 词法状态对应的处理 */
@@ -123,7 +90,7 @@ typedef enum DOR_LEX_TYPE_E {
     {DOR_LEX_STAT_SLASH,            dor_lex_stat_slash}, \
     {DOR_LEX_STAT_COMMENT,          dor_lex_stat_comment}, \
     {DOR_LEX_STAT_COMMENT_CLOSE,    dor_lex_stat_comment_close}, \
-    {DOR_LEX_STAT_UNKNOWN,          dor_lex_stat_unkown}
+    {DOR_LEX_STAT_UNKNOWN,          dor_lex_stat_unknown}
 
 
 /* 字符集对应的词法状态 */
@@ -150,6 +117,29 @@ typedef enum DOR_LEX_TYPE_E {
     {'$',   '\0',   DOR_LEX_STAT_LEX}
 
 
+/* 字符串对应的词法状态 */
+#define DOR_LEX_STR_STAT_LIST \
+    {"+=",          DOR_LEX_STAT_SYMBOL}, \
+    {"-=",          DOR_LEX_STAT_SYMBOL}, \
+    {"*=",          DOR_LEX_STAT_SYMBOL}, \
+    {"/=",          DOR_LEX_STAT_SYMBOL}, \
+    {"%=",          DOR_LEX_STAT_SYMBOL}, \
+    {"&=",          DOR_LEX_STAT_SYMBOL}, \
+    {"|=",          DOR_LEX_STAT_SYMBOL}, \
+    {"^=",          DOR_LEX_STAT_SYMBOL}, \
+    {"<<=",         DOR_LEX_STAT_SYMBOL}, \
+    {">>=",         DOR_LEX_STAT_SYMBOL}, \
+    {"<<",          DOR_LEX_STAT_SYMBOL}, \
+    {">>",          DOR_LEX_STAT_SYMBOL}, \
+    {"&&",          DOR_LEX_STAT_SYMBOL}, \
+    {"||",          DOR_LEX_STAT_SYMBOL}, \
+    {"==",          DOR_LEX_STAT_SYMBOL}, \
+    {"!=",          DOR_LEX_STAT_SYMBOL}, \
+    {"<=",          DOR_LEX_STAT_SYMBOL}, \
+    {">=",          DOR_LEX_STAT_SYMBOL}, \
+    {"...",         DOR_LEX_STAT_SYMBOL}, \
+
+
 /* 词法分析上下文 */
 typedef struct DOR_LEX_CONTEXT_S {
     DOR_U32 state;                          /* 状态 */
@@ -160,11 +150,12 @@ typedef struct DOR_LEX_CONTEXT_S {
 } DOR_LEX_CONTEXT;
 
 
-/* 初始化 */
-extern DOR_ERR dor_lex_init(DOR_LEX_CONTEXT *t);
+/* 初始化和结束 */
+extern DOR_ERR  dor_lex_init    (DOR_LEX_CONTEXT *t);
+extern void     dor_lex_final   (DOR_LEX_CONTEXT *t);
 
 /* 解析 */
-extern DOR_ERR dor_lex_parse(DOR_LEX_CONTEXT *t, const char *s);
+extern DOR_ERR  dor_lex_parse   (DOR_LEX_CONTEXT *t, const char *s);
 
 
 /* 词法状态对应的名称 */
@@ -175,16 +166,6 @@ typedef struct DOR_LEX_STAT_NAME_S {
 extern DOR_ERR      dor_lex_set_stat_name(DOR_LEX_STAT_NAME *list, DOR_U32 count);
 extern const char * dor_lex_get_stat_name(DOR_LEX_STAT stat);
 extern DOR_LEX_STAT dor_lex_get_stat_value(const char *name);
-
-
-/* 词法类型对应的名称 */
-typedef struct DOR_LEX_TYPE_NAME_S {
-    DOR_LEX_TYPE type;
-    const char * name;
-} DOR_LEX_TYPE_NAME;
-extern DOR_ERR      dor_lex_set_type_name(DOR_LEX_TYPE_NAME *list, DOR_U32 count);
-extern const char * dor_lex_get_type_name(DOR_LEX_TYPE type);
-extern DOR_LEX_TYPE dor_lex_get_type_value(const char *name);
 
 
 /* 词法状态对应的处理 */
@@ -207,6 +188,15 @@ extern DOR_ERR      dor_lex_set_stat_chr(DOR_LEX_CHR_STAT *list, DOR_U32 count);
 extern DOR_LEX_STAT dor_lex_get_stat_chr(char c);
 
 
+/* 字符串对应的词法状态 */
+typedef struct DOR_LEX_STR_STAT_S {
+    const char * s;                         /* 对应字符串 */
+    DOR_LEX_STAT state;                     /* 对应状态 */
+} DOR_LEX_STR_STAT;
+extern DOR_ERR      dor_lex_set_stat_str(DOR_LEX_STR_STAT *list, DOR_U32 count);
+extern DOR_LEX_STAT dor_lex_get_stat_str(const char * s);
+
+
 /* 词法状态入口 */
 extern DOR_ERR dor_lex_stat_init            (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
 extern DOR_ERR dor_lex_stat_finish          (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
@@ -226,19 +216,17 @@ extern DOR_ERR dor_lex_stat_dot             (DOR_LEX_CONTEXT *t, const char *s, 
 extern DOR_ERR dor_lex_stat_slash           (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
 extern DOR_ERR dor_lex_stat_comment         (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
 extern DOR_ERR dor_lex_stat_comment_close   (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
-extern DOR_ERR dor_lex_stat_unkown          (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
+extern DOR_ERR dor_lex_stat_unknown         (DOR_LEX_CONTEXT *t, const char *s, DOR_U32 i);
 
 
 /* 状态变化 */
 extern DOR_ERR dor_lex_stat_change(DOR_LEX_CONTEXT *t, 
-    DOR_LEX_TYPE y, DOR_LEX_STAT a, 
-    const char *s, DOR_U32 i);
+    DOR_LEX_STAT a, const char *s, DOR_U32 i);
 
 
 /* 分词后的处理函数 */
 typedef DOR_ERR (*DOR_LEX_PROC_FUNC)(DOR_LEX_CONTEXT *t, 
-    DOR_LEX_TYPE y, DOR_LEX_STAT a, 
-    const char *s, DOR_U32 i, 
+    DOR_LEX_STAT a, const char *s, DOR_U32 i, 
     void *para);
 extern void dor_lex_set_proc(DOR_LEX_PROC_FUNC func, void *para);
 
