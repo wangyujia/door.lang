@@ -1,11 +1,10 @@
 # door.lang
-DOOR(分布式对象操作)语言
-The Language Of Door (Distributed Object Operating Routine)
+DOOR(分布式对象操作)语言：The Language Of Door (Distributed Object Operating Routine)  
+首字母刚好组成中文的“门”，意为分布式组件之间提供连接的“门”。  
 
 
 ## Language Purpose
-door-lang的首字母刚好组成中文的“门”，意为分布式组件之间提供连接的“门”。
-door-lang是一种多范式编程语言，支持面向对象范式，也支持函数式编程，目的是把二者结合在一起。
+door-lang是一种多范式编程语言，支持面向对象范式，也支持函数式编程，目的是把二者结合在一起。  
 目的是实现一种更适合用于粘合C/C++等可编译为机器指令的胶水语言（动态语言），同时语言具有灵活小巧的特性和范式，比如函数式语言，典型代表为js。
 但是js嵌入到C/C++中，不太适合使用C/C++的native代码作为扩展。需要更加支持虚函数行为来定义对象的动态语言（getter/setter/...)
 同时，把类型/对象/函数/参数等信息动态化 ……
