@@ -19,7 +19,7 @@ typedef int (*DOR_TEST_FUNC)(
 /* 测试节点类型 */
 typedef struct DOR_TEST_S {
     const char *    name;
-    DOR_TEST_FUNC    func;
+    DOR_TEST_FUNC   func;
     DOR_DLL_NODE(struct DOR_TEST_S);
 } DOR_TEST;
 

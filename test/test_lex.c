@@ -45,6 +45,7 @@ dump-door:test,"var a=0b0110;console.log('a',(a)?a:'null');"
 */
 DOR_TEST_CASE(lex) {
     char info[256];
+    int i;
 
     dor_log_print = print;
     dor_log_para  = para;
@@ -109,7 +110,7 @@ DOR_TEST_CASE(lex) {
         __CHECK("0.15/*abc*123*def*", FALSE);
 
     } else {
-            for (int i = 0;i < argc; ++i) {
+            for (i = 0;i < argc; ++i) {
             __CHECK(argv[i], TRUE);
         }
     }

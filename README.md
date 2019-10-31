@@ -28,12 +28,17 @@ door-lang是一种多范式编程语言，支持面向对象范式，也支持�
 ```
 而消息是由多个参数值的结构（序列化）组成：
 ```
-    op-object-attribute: arg1 op value1, arg2 op value2, arg3 op value3, ... ;
-    op-object-attribute: value1, value2, value3, ... ;
-    op-object: value1, value2, value3, ... ;
-    object: value1, value2, value3, ... ;
+    op-obj-attr: arg1 op val1, arg2 op val2, arg3 op val3, ... ;
+    op-obj-attr: val1, val2, val3, ... ;
+    op-obj: val1, val2, val3, ... ;
+    obj: val1, val2, val3, ... ;
 ```
 这里属性可以为空，参数也可以直接按顺序匹配值，也可以省略操作。  
+上面的样式正是DCOP的命令行(command line)格式，具体例子：
+```
+    get-user-list: id, name, group @ level = 1
+```
+
 可见，消息与函数调用时的参数很像，如果把消息看作是函数参数，那么对象本身就相当于是被调用的函数。  
 （统一函数和对象的思想自然就形成了。）  
 但是，即使在函数为第一主体地位的常用函数式语言(比如js)中，也是把对象和函数分开定义的，在定义对象时，由于对象的成员只能是按照结构体定义（key-value|list等内存形式的结构），对象整体无法用一个函数来进行替代（虚定义），所以不方便进行跨语言打桩。比如：
@@ -60,10 +65,12 @@ door-lang是一种多范式编程语言，支持面向对象范式，也支持�
 无论是哪种方式，返回的都是一个外部可见的结构。这种结构在C/C++中很不好控制，必须显式使用js的API函数来添加成员。
 salt语言正是利用语法糖来统一函数和对象的（o.a -> o(a)），但是如果直接将对象当作一个函数，那么会失去围绕对象及其属性的丰富的自定义操作。所以这里不使用语法糖，而是按照刚才消息中的操作，给对象及其参数都加上一个'操作'：
 ```
-    obj += 5        ->  set-obj:+=5         ->  obj(.'', +=5)
-    obj.attr += 5   ->  set-obj-attr:+=5    ->  obj(.'attr', +=5)
-    obj.func(x,y)   ->  call-obj-func:x,y   ->  obj(.'func', x, y)
+    set-obj: +=5;               ->  obj += 5            ->  obj(set '', += 5)
+    set-obj-attr: +=5;          ->  obj.attr += 5       ->  obj(set 'attr', += 5)
+    get-obj-attr                ->  obj.attr            ->  obj(get 'attr')
+    call-obj-func: x, y;        ->  obj.func(x,y)       ->  obj(call 'func', x, y)
 ```
+即：对于函数和参数都给一个'操作'，对函数（用来替代函数)来说，操作本身或者第一成员(属性)，对参数来说，就是操作对应的参数。
 函数在实现时，可以使用特定的方法来获取某个参数前的操作符，不指定参数获取的是无参数操作符(可在对象前面的操作符），比如: ++o, o++, !o 。
 ```
     函数C() {                           // door准备省略函数关键字，直接使用(){}作为函数语法
